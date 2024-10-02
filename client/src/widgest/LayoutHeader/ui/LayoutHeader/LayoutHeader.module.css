@@ -1,0 +1,21 @@
+.header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    background-color: darkslategrey;
+    padding: 15px;
+}
+
+.navigation {
+    width: 100%;
+}
+
+.navigationList {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    flex-grow: 1;
+    list-style: none;
+}

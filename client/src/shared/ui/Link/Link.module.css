@@ -1,0 +1,12 @@
+.root {
+    padding: 10px 15px;
+    color: azure;
+    background-color: darkcyan;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.active {
+    color: azure;
+    background-color: #00dada;
+}
