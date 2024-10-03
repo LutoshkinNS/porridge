@@ -13,11 +13,11 @@ export const apiSlice = createApi({
     // The `getTasks` endpoint is a "query" operation that returns data
     getTasks: builder.query<TodosType[], void>({
       // The URL for the request is 'http://localhost:3000/tasks'
-      query: () => '/tasks'
+      query: () => '/todos'
     }),
-    addNewTask: builder.mutation({
+    addNewTask: builder.mutation<TodosType[], Omit<TodosType, 'id'>>({
       query: initialPost => ({
-        url: '/tasks',
+        url: '/todos',
         method: 'POST',
         // Include the entire post object as the body of the request
         body: initialPost

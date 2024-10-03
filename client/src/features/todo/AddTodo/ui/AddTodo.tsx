@@ -1,6 +1,6 @@
 import { Button } from '@/shared/ui/Button/Button.tsx';
 import { useState } from 'react';
-import { useAddNewTaskMutation } from '@/shared/api/apiSlice.ts';
+import { useAddNewTaskMutation } from '@/shared/api';
 
 export type AddTodoProps = {
   className?: string
@@ -9,13 +9,13 @@ export type AddTodoProps = {
 export const AddTodo = (props: AddTodoProps) => {
   const { className } = props;
 
-  const [addNewTask, { isLoading }] = useAddNewTaskMutation();
+  const [addNewTask] = useAddNewTaskMutation();
 
   const [value, setValue] = useState('');
 
   const addTask = async () => {
     try {
-      await addNewTask({title: value}).unwrap()
+      await addNewTask({title: value, completed: false}).unwrap()
     } catch (err) {
       console.error('Failed to save the post: ', err)
     }
@@ -23,11 +23,11 @@ export const AddTodo = (props: AddTodoProps) => {
     setValue('');
   };
 
-  const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      addTask();
-    }
-  };
+  // const handleKeyDown = (event) => {
+  //   if (event.key === 'Enter') {
+  //     addTask();
+  //   }
+  // };
 
   return (
     <div className={className}>
@@ -36,7 +36,7 @@ export const AddTodo = (props: AddTodoProps) => {
         type="text"
         placeholder="what need to do?"
         onChange={(event) => setValue(event.target.value)}
-        onKeyDown={handleKeyDown}
+        // onKeyDown={handleKeyDown}
         value={value}
       />
       <Button onClick={addTask} type="submit">Добавить</Button>
