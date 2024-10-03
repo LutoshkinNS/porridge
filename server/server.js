@@ -1,27 +1,33 @@
-import * as process from 'node:process';
-
 import fastify from 'fastify'
+import cors from '@fastify/cors'
 
-import envPlugin from "./plugins/env.js";
-import indexRoutes from "./routes/index.js";
+import * as process from 'node:process';
+import * as dotenv from "dotenv";
+
 import dbConnector from './db/dbConnector.js';
+import addRoutes from './routes/index.js';
 
 // Run the server!
-const server = fastify({ logger: true });
+const app = fastify({ logger: true });
 
-server.register(envPlugin);
-server.register(dbConnector);
-server.register(indexRoutes);
+const env = dotenv.config({path: `.env.${process.env.NODE_ENV}`}).parsed;
 
-async function initAppServer() {
-  await server.ready();
+app.register(dbConnector);
+app.register(cors, {
+  origin: env.CORS_ORIGIN,
+})
+
+app.after(() => addRoutes(app))
+
+async function initApp() {
+  await app.ready();
 
   try {
-    await server.listen({ port: server.config.PORT || 5000 });
+    await app.listen({ port: env.PORT || 5000 });
   } catch (err) {
-    server.log.error(err);
+    app.log.error(err);
     process.exit(1);
   }
 }
 
-initAppServer();
+initApp();
