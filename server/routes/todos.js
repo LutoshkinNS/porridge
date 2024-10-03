@@ -11,10 +11,10 @@ export default (app) => {
     });
 
     app.post(routes.todoNew(), (req, res) => {
-        const { title } = req.body;
+        const { title, completed } = req.body;
         app.pg.query(
             'INSERT INTO tasks (title, completed) VALUES ($1, $2) RETURNING id, title, completed',
-            [title, false],
+            [title, completed],
             function onResult (err, result) {
                 if (err) {
                     res.code(500).send(err);
